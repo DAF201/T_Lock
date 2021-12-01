@@ -93,7 +93,7 @@ class normal(file):
                 '/'+self.info['file_name']+'.zip'
             image_path = self.output_info['source_dir']+'/default_image.jpg'
             output_path = self.output_info['output_dir'] + \
-                '\\'+self.info['file_name']+'.jpg'
+                '/'+self.info['file_name']+'.jpg'
 
             with open(json_path, 'w')as json_file:
                 json.dump(self.info, json_file)
