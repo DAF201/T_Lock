@@ -12,6 +12,8 @@ print(os.path.getctime('t.py'))
 print(os.path.getatime('t.py'))
 print(os.path.getmtime('t.py'))
 
+# zip and un zip
+
 # 1638553612.7103932 ctime
 # 1638553612.7103932 atime
 # 1638553612.7103932 mtime
@@ -19,3 +21,13 @@ print(os.path.getmtime('t.py'))
 # 1638553612.7103932
 # 1638553790.0718744
 # 1638553790.0718744
+
+# zip, move, move back and unzip
+
+# 1638553612.7103932
+# 1638553790.0718744
+# 1638553790.0718744
+
+# 1638553950.1049001
+# 1638553950.1049001
+# 1638553950.1049001
