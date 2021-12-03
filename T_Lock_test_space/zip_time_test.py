@@ -22,6 +22,9 @@ print('mtime:'+str(os.path.getmtime(PATH)))
 # atime:1638552749.4763527
 # mtime:1638552749.4763527
 
+
+# remains are manually unzip tested
+
 # copy the zip and unzip
 # ctime:1638552809.9640555
 # atime:1638552810.8119593
