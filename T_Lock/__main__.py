@@ -2,7 +2,7 @@ import os
 from os.path import basename
 import time
 import zipfile
-from tkinter import Message, Tk
+from tkinter import Tk
 import hashlib
 import base64
 import random
@@ -14,7 +14,7 @@ import glob
 OUTPUT = ''.join([__file__.split('main.py')[0], 'output\\'])
 
 '''customize data path'''
-with open(''.join([__file__.split('main.py')[0], 'customize\\customize.json'])) as customize:
+with open(''.join([__file__.split('main.py')[0], '\\customize\\customize.json'])) as customize:
     CUSTOMIZE = json.load(customize)
 
 EXPIRE_TIME = int(CUSTOMIZE['hours'])
