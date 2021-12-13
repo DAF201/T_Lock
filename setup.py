@@ -10,8 +10,8 @@ setuptools.setup(
     url='https://github.com/DAF201/T_Lock',
     packages=['T_Lock'],
     package_data={
-        'default_image.jpg',
-        'customize.json'
+        '':'default_image.jpg',
+        '':'customize.json'
     },
     classifiers=[
         'Programming Language :: Python :: 3',
