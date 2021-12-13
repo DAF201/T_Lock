@@ -11,10 +11,10 @@ from tkinter.filedialog import askopenfilenames
 import glob
 
 '''output path'''
-OUTPUT = ''.join([__file__.split('main.py')[0], 'output\\'])
+OUTPUT = ''.join([__file__.split('__main__.py')[0], 'output\\'])
 
 '''customize data path'''
-with open(''.join([__file__.split('main.py')[0], '\\customize\\customize.json'])) as customize:
+with open(''.join([__file__.split('__main__.py')[0], '\\customize\\customize.json'])) as customize:
     CUSTOMIZE = json.load(customize)
 
 EXPIRE_TIME = int(CUSTOMIZE['hours'])
