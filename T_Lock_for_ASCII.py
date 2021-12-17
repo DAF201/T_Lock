@@ -103,6 +103,10 @@ class locked(file):
         self.__generate()
         if self.check:
             self.__create()
+        else:
+            import time
+            print('failed vertifying, check was file damaged or expired: @%s' %
+                  (time.ctime(self.__json['expire_time'])))
         global run
         run = False
 
@@ -114,7 +118,7 @@ class locked(file):
         key_hash = self._hash(str(self.__json)).encode()
 
         self.__lock = self.__lock.replace(cal_key_hash, b'')
-        return (cal_key_hash == key_hash) | (sha256(self.__lock).hexdigest() == self.__json['hash']) | (self.__json['expire_time'] > time())
+        return (cal_key_hash == key_hash) and (sha256(self.__lock).hexdigest() == self.__json['hash']) and (self.__json['expire_time'] > time())
 
 
 class normal(file):
@@ -147,7 +151,7 @@ class normal(file):
             'ctime': self._ctime,
             'mtime': self._mtime,
             'current_time': self._current_time,
-            'expire_time': self._current_time+3600*self.customize['expire_hours'],
+            'expire_time': self._current_time+self.customize['expire_hours']*3600,
             'hash': self.__hash
         }
 
