@@ -8,6 +8,9 @@ from json import load, dump
 from tkinter import Tk
 from tkinter.filedialog import askopenfilenames
 from glob import glob
+from threading import Thread
+
+run = True
 
 
 def last_file(directory, extension='jpg') -> os.path:
@@ -46,20 +49,28 @@ class file:
         if type(data) == bytes:
             return sha256(data).hexdigest()
 
+    def _timeing(self):
+        import time
+        start = time.time()
+        while run:
+            print('time cost: %s' % (time.time()-start), end='\r')
+            time.sleep(0.1)
+
 
 class locked(file):
     '''locked file, locked(path)'''
 
     def __init__(self, path) -> None:
         super().__init__(path)
+        self.f = Thread(target=self.__main)
+        self.t = Thread(target=self._timeing)
 
-        self.get_json_info()
-        self.get_key()
-        self.generate()
-        if self.check:
-            self.create()
+        self.f.start()
+        self.t.start()
+        self.f.join()
+        self.t.join()
 
-    def get_json_info(self):
+    def __get_json_info(self):
         with zip(self._path)as zipped:
             zip.extractall(zipped)
         self.__work_space = os.getcwd()
@@ -70,20 +81,30 @@ class locked(file):
         os.remove(last_file(self.__work_space, extension='json'))
         os.remove(last_file(self.__work_space, extension='lock'))
 
-    def get_key(self):
+    def __get_key(self):
         self.__key = int(self.__json['atime'] +
                          self.__json['ctime']+self.__json['mtime']) % 8
 
-    def generate(self):
+    def __generate(self):
         self.__lock = list(self.__lock)
         for x in range(len(self.__lock)):
             if 256-self.__lock[x] > self.__key:
                 self.__lock[x] -= self.__key
         self.__lock = bytes(self.__lock)
 
-    def create(self):
+    def __create(self):
         with open(''.join([self.__work_space, '\\', self.__json['name'], self.__json['ext']]), 'wb')as final:
             final.write(self.__lock)
+
+    def __main(self):
+        print('decoding: %s' % (self._name+self._ext))
+        self.__get_json_info()
+        self.__get_key()
+        self.__generate()
+        if self.check:
+            self.__create()
+        global run
+        run = False
 
     @property
     def check(self):
@@ -116,7 +137,6 @@ class normal(file):
             with open('customize.json', 'w')as customize:
                 dump(self.customize, customize)
 
-        self.__bytes = list(self._data)
         self.__hash = self._hash(self._data)
 
         self.__key = int(self._atime+self._ctime+self._mtime) % 8
@@ -133,16 +153,23 @@ class normal(file):
 
         self.__key_hash = self._hash(str(self.__key_dict)).encode()
 
-        self.__main
+        print('encoding: %s' % (self._name+self._ext))
+        self.f = Thread(target=self.__main)
+        self.t = Thread(target=self._timeing)
 
-    @property
+        self.f.start()
+        self.t.start()
+        self.f.join()
+        self.t.join()
+
     def __main(self):
         self.__insert_key_hash()
         self.__add_key()
         self.__create_lock()
         self.__zip()
         self.__merge()
-        print('time cost: %ss' % (time()-self._current_time))
+        global run
+        run = False
 
     def __add_key(self):
 
@@ -205,9 +232,4 @@ def main():
 
 
 if __name__ == '__main__':
-    try:
-        main()
-    except Exception as e:
-        print(e)
-        import time
-        time.sleep(100)
+    main()
