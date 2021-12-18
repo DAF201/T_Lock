@@ -40,15 +40,15 @@ def cover(cover):
         return cover
     except Exception as error:
         print('error: '+str(CoverError(error)), 'using default cover instead')
-        return ''.join([__file__.split('main.py')[0], 'source\\default_image.jpg'])
+        return ''.join([__file__.split('__main__.py')[0], 'source\\default_image.jpg'])
 
 
 '''cover path'''
-COVER = cover(''.join([__file__.split('main.py')[0], 'source\\']))
+COVER = cover(''.join([__file__.split('__main__.py')[0], 'source\\']))
 
 
 '''temporary path'''
-TEMP = ''.join([__file__.split('main.py')[0], 'temp\\'])
+TEMP = ''.join([__file__.split('__main__.py')[0], 'temp\\'])
 
 
 def TEMP_JSON(name):
