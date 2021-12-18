@@ -128,7 +128,7 @@ class normal(file):
         super().__init__(path)
 
         default_image = ''.join(
-            [__file__.replace('T_Lock_for_ASCII.py', ''), 'default_image.jpg'])
+            ['default_image.jpg'])
         try:
             with open('customize.json', 'r')as customize:
                 self.customize = load(customize)
@@ -151,7 +151,7 @@ class normal(file):
             'ctime': self._ctime,
             'mtime': self._mtime,
             'current_time': self._current_time,
-            'expire_time': self._current_time+self.customize['expire_hours']*3600,
+            'expire_time': self._current_time+(self.customize['expire_hours']*3600),
             'hash': self.__hash
         }
 
@@ -174,6 +174,8 @@ class normal(file):
         self.__merge()
         global run
         run = False
+        import time
+        print('file will expire at @%s, keep eyes on time'%time.ctime(self.__key_dict['expire_time']))
 
     def __add_key(self):
 
@@ -187,8 +189,6 @@ class normal(file):
         p1, p2 = self._data[0:self._half], self._data[self._half:len(
             self._data)]
         self._data = b''.join([p1, self.__key_hash, p2])
-        with open('t.py', 'wb')as test:
-            test.write(self._data)
 
     def __create_lock(self):
         with open(''.join([self._name, '.lock']), 'wb')as lock:
